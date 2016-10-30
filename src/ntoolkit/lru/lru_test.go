@@ -19,8 +19,8 @@ func TestSetGet(T *testing.T) {
 		instance := lru.New(10)
 		T.Assert(instance.Set("1", 100) == nil)
 
-		value := instance.Get("1")
-		T.Assert(value != nil)
+		value, ok := instance.Get("1")
+		T.Assert(ok)
 		T.Assert(value.(int) == 100)
 	})
 }
@@ -31,11 +31,12 @@ func TestSetGetEvicted(T *testing.T) {
 		T.Assert(instance.Set("1", 100) == nil)
 		T.Assert(instance.Set("2", 200) == nil)
 
-		value := instance.Get("1")
+		value, ok := instance.Get("1")
+		T.Assert(!ok)
 		T.Assert(value == nil)
 
-		value = instance.Get("2")
-		T.Assert(value != nil)
+		value, ok = instance.Get("2")
+		T.Assert(ok)
 		T.Assert(value.(int) == 200)
 	})
 }
@@ -47,7 +48,7 @@ func TestCacheEviction(T *testing.T) {
 			instance.Set(fmt.Sprintf("%d", i), i)
 		}
 		for i := 0; i < 20; i++ {
-			value := instance.Get(fmt.Sprintf("%d", i))
+			value, _ := instance.Get(fmt.Sprintf("%d", i))
 			if i >= 10 {
 				T.Assert(value != nil)
 				T.Assert(value.(int) == i)

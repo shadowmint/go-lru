@@ -1,11 +1,11 @@
 {
-  "name": "go-TEMPLATE",
+  "name": "go-lru",
   "version": "1.0.0",
-  "description": "TEMPLATE",
+  "description": "Least recently used object cache",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shadowmint/go-TEMPLATE.git"
+    "url": "git+https://github.com/shadowmint/go-lru.git"
   },
   "files": [
     "index.js",
@@ -15,9 +15,9 @@
   "author": "douglas.linder@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shadowmint/go-TEMPLATE/issues"
+    "url": "https://github.com/shadowmint/go-lru/issues"
   },
-  "homepage": "https://github.com/shadowmint/go-TEMPLATE",
+  "homepage": "https://github.com/shadowmint/go-lru",
   "scripts": {
     "test": "go test -v ./src/ntoolkit/...",
     "postinstall": "node scripts/postinstall.js"

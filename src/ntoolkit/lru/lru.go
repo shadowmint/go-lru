@@ -21,10 +21,10 @@ func New(limit int) *Cache {
 }
 
 // Get returns a record, and moves it to the back of the eviction list
-func (cache *Cache) Get(key string) interface{} {
+func (cache *Cache) Get(key string) (interface{}, bool) {
 	element, ok := cache.objectMap[key]
 	if !ok {
-		return nil
+		return nil, false
 	}
 
 	rtn := element.Value
@@ -33,7 +33,7 @@ func (cache *Cache) Get(key string) interface{} {
 	}
 
 	record, _ := rtn.(*cacheRecord)
-	return record.Value
+	return record.Value, true
 }
 
 // Set a cache record to the given value, if not enough space, evic a spot
