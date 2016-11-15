@@ -3,6 +3,7 @@ package lru
 import (
 	"container/list"
 	"ntoolkit/errors"
+	"ntoolkit/iter"
 )
 
 // Cache implements a simple LRU strategy
@@ -78,6 +79,12 @@ func (cache *Cache) Resize(size int) error {
 		}
 	}
 	return nil
+}
+
+// All returns an iterator of KeyValueRecord for the entire cache.
+// The cache entry hit values are not updated.
+func (cache *Cache) All() iter.Iter {
+	return newKeyValueIter(cache.objectMap)
 }
 
 // evic finds the least recently used cache entry and evics it from the list

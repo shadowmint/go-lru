@@ -25,6 +25,7 @@
   "dependencies": {
     "go-assert": "github:shadowmint/go-assert",
     "go-errors": "github:shadowmint/go-errors",
+    "go-iter": "github:shadowmint/go-iter#1.0.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0"
   }

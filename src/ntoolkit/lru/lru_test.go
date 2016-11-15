@@ -3,6 +3,8 @@ package lru_test
 import (
 	"fmt"
 	"ntoolkit/assert"
+	"ntoolkit/errors"
+	"ntoolkit/iter"
 	"ntoolkit/lru"
 	"testing"
 )
@@ -22,6 +24,44 @@ func TestSetGet(T *testing.T) {
 		value, ok := instance.Get("1")
 		T.Assert(ok)
 		T.Assert(value.(int) == 100)
+
+		objects, _ := iter.Count(instance.All())
+		T.Assert(objects == 1)
+	})
+}
+
+func TestAll(T *testing.T) {
+	assert.Test(T, func(T *assert.T) {
+		instance := lru.New(4)
+		instance.Set("1", 100)
+		instance.Set("2", 200)
+		instance.Set("3", 300)
+		instance.Set("4", 400)
+
+		total := 0
+		items := instance.All()
+		for val, err := items.Next(); err == nil; val, err = items.Next() {
+			keyValue := val.(*lru.KeyValue)
+			total += keyValue.Value.(int)
+		}
+
+		T.Assert(total == (100 + 200 + 300 + 400))
+
+		_, err := items.Next()
+		T.Assert(errors.Is(err, iter.ErrEndIteration{}))
+
+		// Push value off the cache; lru is 2 since we just did a Get on 1
+		instance.Get("1")
+		instance.Set("5", 500)
+
+		total = 0
+		items = instance.All()
+		for val, err := items.Next(); err == nil; val, err = items.Next() {
+			keyValue := val.(*lru.KeyValue)
+			total += keyValue.Value.(int)
+		}
+
+		T.Assert(total == (100 + 500 + 300 + 400))
 	})
 }
 
